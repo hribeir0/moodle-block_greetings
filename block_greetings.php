@@ -103,7 +103,7 @@ class block_greetings extends block_base {
             $messageform = new \block_greetings\form\message_form();
 
             if ($data = $messageform->get_data()) {
-                // print_object($data);die;
+
                 require_capability('block/greetings:postmessages', $context);
 
                 if (!empty($data->message)) {
@@ -129,7 +129,7 @@ class block_greetings extends block_base {
                 $sql = "SELECT m.id, m.message, m.timecreated, m.userid {$userfieldssql->selects}
                         FROM {block_greetings_messages} m
                         LEFT JOIN {user} u ON u.id = m.userid
-                        ORDER BY timecreated DESC";
+                        ORDER BY timecreated DESC LIMIT 3";
 
                 $messages = $DB->get_records_sql($sql);
 
