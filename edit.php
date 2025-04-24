@@ -50,14 +50,15 @@ if (!$result = $DB->get_record('block_greetings_messages', ['id' => $id])) {
 $canedit = has_capability('block/greetings:deleteanymessage', $context) ||
     (has_capability('block/greetings:deleteownmessage', $context) && $result->userid == $USER->id);
 
-$messageform = new \local_greetings\form\message_form(null, ['message' => $result]);
+$messageform = new \block_greetings\form\message_form(null, ['message' => $result]);
 
 if ($canedit && $data = $messageform->get_data()) {
-    $message = required_param('message', PARAM_TEXT);
 
-    if (!empty($message)) {
+
+    if (!empty($data->message)) {
         // Only update the message. Leave other data untouched.
-        $result->message = $message;
+
+        $result->message = $data->message['text'];
 
         $DB->update_record('block_greetings_messages', $result);
 

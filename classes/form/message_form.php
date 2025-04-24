@@ -47,12 +47,17 @@ class message_form extends \moodleform {
 
         // If editing the form, load data from db.
         if (isset($this->_customdata['message'])) {
+
             $message = $this->_customdata['message'];
 
             $mform->addElement('hidden', 'id', $message->id);
             $mform->setType('id', PARAM_INT); // Set type of element.
 
-            $mform->setDefault('message', $message->message);
+            $mform->setDefault('message', [
+                'text' => $message->message,
+                'format' => FORMAT_HTML,
+            ]);
+
         }
 
         $submitlabel = get_string('submit');
