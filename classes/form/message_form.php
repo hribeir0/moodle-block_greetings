@@ -42,8 +42,8 @@ class message_form extends \moodleform {
     public function definition() {
         $mform = $this->_form; // Don't forget the underscore!
 
-        $mform->addElement('textarea', 'message', get_string('yourmessage', 'block_greetings')); // Add elements to your form.
-        $mform->setType('message', PARAM_TEXT); // Set type of element.
+        $mform->addElement('editor', 'message', get_string('yourmessage', 'block_greetings')); // Add elements to your form.
+        $mform->setType('message', PARAM_RAW); // Set type of element.
 
         // If editing the form, load data from db.
         if (isset($this->_customdata['message'])) {

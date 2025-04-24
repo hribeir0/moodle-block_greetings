@@ -103,13 +103,12 @@ class block_greetings extends block_base {
             $messageform = new \block_greetings\form\message_form();
 
             if ($data = $messageform->get_data()) {
+                // print_object($data);die;
                 require_capability('block/greetings:postmessages', $context);
 
-                $message = required_param('message', PARAM_TEXT);
-
-                if (!empty($message)) {
+                if (!empty($data->message)) {
                     $record = new stdClass;
-                    $record->message = $message;
+                    $record->message = $data->message['text'];
                     $record->timecreated = time();
                     $record->userid = $USER->id;
 
