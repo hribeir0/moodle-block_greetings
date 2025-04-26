@@ -41,10 +41,12 @@ class message_form extends \moodleform {
      */
     public function definition() {
         $mform = $this->_form; // Don't forget the underscore!
+        $options = $this->_customdata['options'];
 
         $mform->addElement('editor', 'message', get_string('yourmessage', 'block_greetings')); // Add elements to your form.
         $mform->setType('message', PARAM_RAW); // Set type of element.
-
+        // Add attachments element.
+        $mform->addElement('filemanager', 'attachments', get_string('attachments', 'block_greetings'), null, $options);
         // If editing the form, load data from db.
         if (isset($this->_customdata['message'])) {
 

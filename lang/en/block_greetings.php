@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['attachments'] = 'Attachments';
 $string['cannotaddgreeting'] = 'Sorry. You cannot post a greeting message.';
 $string['cannoteditmessage'] = 'You cannot edit this message';
 $string['editmessage'] = 'Edit message';

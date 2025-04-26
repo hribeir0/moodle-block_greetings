@@ -94,14 +94,19 @@ class block_greetings extends block_base {
                     }
 
                     // Todo: Confirm before deleting.
-                    $DB->delete_records('block_greetings_messages', $params);
-
+                    $deletedmsg = $DB->delete_records('block_greetings_messages', $params);
+                    if ($deletedmsg) {
+                        $fs = get_file_storage();
+                        $fs->delete_area_files($context->id, 'block_greetings', 'attachment', $id);
+                    }
                     redirect($CFG->wwwroot . '/my/'); // Reload this page to remove visible sesskey.
                 }
             }
-
-            $messageform = new \block_greetings\form\message_form();
-
+            $options = ['subdirs' => 0, 'maxbytes'=> 1048576, 'areamaxbytes' => 3145728,
+            'maxfiles' => 3, 'accepted_types' => ['*'], 'context' => $context];
+            $messageform = new \block_greetings\form\message_form(null, ['options' => $options]);
+            // Get sent file while on draft.
+            $draftitemid = file_get_submitted_draft_itemid('attachments');
             if ($data = $messageform->get_data()) {
 
                 require_capability('block/greetings:postmessages', $context);
@@ -112,7 +117,9 @@ class block_greetings extends block_base {
                     $record->timecreated = time();
                     $record->userid = $USER->id;
 
-                    $DB->insert_record('block_greetings_messages', $record);
+                    $itemid = $DB->insert_record('block_greetings_messages', $record);
+                    // Write file from draft to filearea connecting message and attachment.
+                    file_save_draft_area_files($draftitemid, $context->id, 'block_greetings','attachment', $itemid, $options);
 
                     redirect($CFG->wwwroot . '/my/'); // Reload this page to load empty form.
                 }
