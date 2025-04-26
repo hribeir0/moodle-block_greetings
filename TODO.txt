@@ -1,0 +1,8 @@
+I spent a litle bit more than 2h. I believe the pending tasks would take 30m.
+Since the previous task explained most of manipulating user sent files, I thought I could leave it as it is:
+
+Missing:
+
+1. Implement editing existing messages. (Files to draft, and draft to final area)
+2. Attachments list should be a ul instead of <p></p>
+3. Fix any code style following Moodle Style (ATM I don't have Codesniffer working in my IDE)
