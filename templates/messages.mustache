@@ -28,6 +28,7 @@
     <div class="card" style="background: {{cardbackgroundcolor}}" role="listitem">
         <div class="card-body">
             <p class="card-text">{{{message}}}</p>
+            {{#files}}<p class="card-text"><a href="{{url}}">{{filename}}</a></p>{{/files}}
             <p class="card-text">{{#str}} postedby, block_greetings, {{firstname}} {{/str}}</p>
             <p class="card-text">
                 <small class="text-muted">

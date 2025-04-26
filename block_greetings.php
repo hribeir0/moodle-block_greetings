@@ -139,12 +139,32 @@ class block_greetings extends block_base {
                         ORDER BY timecreated DESC LIMIT 3";
 
                 $messages = $DB->get_records_sql($sql);
-
+                $fs = get_file_storage();
                 foreach ($messages as $m) {
                     // Can this user delete this post?
                     // Attach a flag to each message here because we can't do this in mustache.
                     // Using this flag for the edit option too. You can also create another capability for "Edit messages".
                     $m->candelete = ($deleteanypost || ($deletepost && $m->userid == $USER->id));
+                    // Get files for each message.
+                    $files = $fs->get_area_files($context->id, 'block_greetings',
+                    'attachment', $m->id, 'timemodified DESC' , false);
+                    // Loop files.
+                    $m->files = [];
+                    foreach ($files as $file) {
+                        $fileurl = moodle_url::make_pluginfile_url(
+                            $context->id,
+                            'block_greetings',
+                            'attachment',
+                            $m->id,
+                            $file->get_filepath(),
+                            $file->get_filename()
+                        );
+                        $m->files[] = (object) [
+                            'filename' => $file->get_filename(),
+                            'url' => $fileurl->out(),
+                        ];
+                    }
+
                 }
 
                 // Card background colour.
